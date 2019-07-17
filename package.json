@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "mocha --exit"
+    "test": "mocha --exit",
+    "dev": "nodemon server.js"
   },
   "author": "Khris Kempis",
   "license": "ISC",
