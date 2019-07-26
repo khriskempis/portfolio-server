@@ -13,6 +13,18 @@ const GigSchema = mongoose.Schema({
   location: { type: String }
 });
 
+GigSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    month: this.month,
+    days: this.days,
+    dates: this.dates,
+    name: this.name,
+    type: this.type,
+    location: this.location
+  };
+};
+
 const Gigs = mongoose.model("Gigs", GigSchema);
 
 module.exports = { Gigs };

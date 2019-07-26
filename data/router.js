@@ -12,7 +12,7 @@ const jsonParser = bodyParser.json();
 router.get("/", async (req, res) => {
   try {
     const gigs = await Gigs.find();
-    res.status(201).json({ message: "Gigs retireved", gigs });
+    res.status(201).json(gigs.map(gig => gig.serialize()));
   } catch (err) {
     res.status(422).json({ message: "Error, could not retrieve gigs" });
   }

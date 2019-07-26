@@ -1,127 +1,74 @@
+const monthElement = document.getElementsByClassName("month");
 
-// hero text animation
+const BASE_URL = "";
 
-const wordTimeline = new TimelineMax();
+const ajax = {};
 
-wordTimeline
-.from('.teacher-word', 0.5, {
-  y: -40,
-  autoAlpha: 0,
-  ease: Back.easeOut
-})
-.to('.teacher-word', 1, {
-  y: 50,
-  autoAlpha: 0, 
-  ease: Back.easeIn,
-  delay: 3
-})
-.set('.teacher-word', {display: 'none'})
-.set('.musician-word', {display: 'block'})
-.from('.musician-word', 0.5, {
-  y: -40, 
-  autoAlpha: 0,               
-  ease: Back.easeOut
-})
-.to('.musician-word', 1, {
-  y: 50,
-  autoAlpha: 0,
-  ease: Back.easeIn,
-  delay: 3
-})
-.set('.musician-word', {display: 'none'})
-.set('.developer-word', {display: 'block'})
-.from('.developer-word', 0.5, {
-  y: -40,
-  autoAlpha: 0,
-  ease: Back.easeOut
-})
-.to('.developer-word', 1, {
-  y: 50,
-  autoAlpha: 0,
-  ease: Back.easeIn,
-  delay: 3
-})
-.repeat(-1)
+ajax.x = function() {
+  if (typeof XMLHttpRequest !== "undefined") {
+    return new XMLHttpRequest();
+  }
+  let versions = [
+    "MSXML2.XmlHttp.6.0",
+    "MSXML2.XmlHttp.5.0",
+    "MSXML2.XmlHttp.4.0",
+    "MSXML2.XmlHttp.3.0",
+    "MSXML2.XmlHttp.2.0",
+    "Microsoft.XmlHttp"
+  ];
 
+  let xhr;
+  for (let i = 0; i < versions.length; i++) {
+    try {
+      xhr = new ActiveXObject(versions[i]);
+      break;
+    } catch (e) {}
+  }
+  return xhr;
+};
 
-// Scroll to links
+ajax.send = function(url, method, data, async) {
+  if (async === undefined) {
+    async = true;
+  }
+  let x = ajax.x();
 
-// const linkButtons = [
-//   {
-//     link: document.getElementById('project-link'),
-//     section: "#project-section"
-//   },
-//   {
-//     link: document.getElementById('about-link'),
-//     section: "#about-section"
-//   },
-//   {
-//     link: document.getElementById('contact-link'),
-//     section: "#contact-section"
-//   },
-// ]
+  x.open(method, url, async);
+  x.onreadystatechange = function() {
+    if (x.readyState == 4) {
+      handleResponse(x.response);
+    }
+  };
+  if (method == "POST") {
+    x.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  }
+  x.send(data);
+};
 
-// linkButtons.forEach((element, i) => {
-//   let node = element.link
-//   node.onclick = function(){
-//     TweenMax.to(window, 1 + i, {scrollTo: {y: element.section}, ease: Power2.easeOut})
-//   }
-// })
+ajax.get = function(url, data, async) {
+  let query = [];
+  for (let key in data) {
+    query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+  }
+  ajax.send(
+    url + (query.length ? "?" + query.join("&") : ""),
+    "GET",
+    null,
+    async
+  );
+};
 
+ajax.post = function(url, data, async) {
+  let query = [];
+  for (let key in data) {
+    query.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+  }
+  ajax.send(url, "POST", query.join("&"), async);
+};
 
-  
-// scroll controller
-const controller = new ScrollMagic.Controller();
+ajax.get(BASE_URL + "api/gigs", true);
 
-// hero scroll animation
-
-// const headerTL = new TimelineLite();
-
-// headerTL.to('header', 5, {y: -50, opacity: 0.5})
-//   .to('.name', 5, {y:50}, 0)
-
-// const heroScene = new ScrollMagic.Scene({
-//   triggerElement: 'header',
-//   duration: '50%',
-//   triggerHook: 0
-// })
-// .setTween(headerTL)
-// // .addIndicators()
-// .addTo(controller)
-
-// section enter animation
-
-const imgs = document.querySelectorAll('.display-img');
-
-imgs.forEach(element => {
-
-  const imgEnter = TweenMax.from(element, 2, {y: 50, opacity: 0.9})
-
-  const imgEnterScene = new ScrollMagic.Scene({
-    triggerElement: element,
-    duration: '95%',
-    triggerHook: 1,
-    reverse: false
-  })
-  // .addIndicators()
-  .setTween(imgEnter)
-  .addTo(controller)
-})
-
-const containers = document.querySelectorAll('.container');
-
-containers.forEach(element => {
-
-  const container = TweenMax.from(element, 2, {y: 100, opacity: 0.5})
-
-  const imgEnterScene = new ScrollMagic.Scene({
-    triggerElement: element,
-    duration: '100%',
-    triggerHook: 1,
-    reverse: false
-  })
-  // .addIndicators()
-  .setTween(container)
-  .addTo(controller)
-})
-
+function handleResponse(response) {
+  let jsonResponse = JSON.parse(response);
+  console.log(jsonResponse[0]);
+}
