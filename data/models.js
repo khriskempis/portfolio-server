@@ -8,9 +8,11 @@ const GigSchema = mongoose.Schema({
   month: { type: String },
   days: { type: String },
   dates: { type: String },
+  time: { type: String },
   name: { type: String },
   type: { type: String },
-  location: { type: String }
+  location_name: { type: String },
+  location_url: { type: String }
 });
 
 GigSchema.methods.serialize = function() {
@@ -19,9 +21,11 @@ GigSchema.methods.serialize = function() {
     month: this.month,
     days: this.days,
     dates: this.dates,
+    time: this.time,
     name: this.name,
     type: this.type,
-    location: this.location
+    location_name: this.location_name,
+    location_url: this.location_url
   };
 };
 
