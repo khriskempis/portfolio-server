@@ -25,7 +25,8 @@ const Year = mongoose.model("Year", YearSchema);
 // Month
 
 const MonthSchema = mongoose.Schema({
-  year: { type: ObjectId, ref: "Year" },
+  yearId: { type: ObjectId, ref: "Year" },
+  year: { type: Number },
   month_name: { type: String },
   month: { type: Number },
   dates: [{ type: ObjectId, ref: "Gig" }]
@@ -34,6 +35,7 @@ const MonthSchema = mongoose.Schema({
 MonthSchema.methods.serialize = function() {
   return {
     id: this._id,
+    yearId: this.yearId,
     year: this.year,
     month: this.month,
     dates: this.dates

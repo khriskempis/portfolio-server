@@ -19,9 +19,13 @@ router.get("/year/:year", async (req, res) => {
   const year = req.params.year;
 
   try {
-    const yearData = await Year.find({
-      year
-    });
+    const yearData = await Year.find({ year })
+      .select("months")
+      .populate({
+        path: "months",
+        select: "_id dates month month_name"
+      })
+      .exec();
     res.status(200).json(yearData.map(year => year.serialize()));
   } catch (err) {
     res.status(422).json({ err, message: "Could not retrieve year data" });
@@ -32,9 +36,16 @@ router.get("/year/id/:id", async (req, res) => {
   const yearId = req.params.id;
 
   try {
-    const year = await Year.findById(yearId)
-      .select("months year")
-      .populate({ path: "months", select: "_id dates month month_name" });
+    const year = await Year.findById(yearId);
+    //  .select("months year")
+    //   .populate({
+    //   path: "months",
+    //   select: "_id dates month month_name",
+    //   populate: {
+    //     path: "dates",
+    //     select: "_id days name"
+    //   }
+    // });
 
     if (year) {
       res.status(202).json(year);
@@ -51,10 +62,10 @@ router.post("/year", jsonParser, async (req, res) => {
 
   try {
     const yearData = await Year.find({ year });
-    if (yearData) {
+    if (yearData.length !== 0) {
       res
         .status(420)
-        .json({ message: "Error; Year data already exists" })
+        .json({ message: "Error; Year data already exists", yearData })
         .end();
     } else {
       const newYear = await Year.create({
@@ -70,7 +81,7 @@ router.post("/year", jsonParser, async (req, res) => {
 // Month route
 
 router.post("/month", jsonParser, async (req, res) => {
-  const { month, yearId } = req.body;
+  const { month, yearId, year } = req.body;
   const monthsArr = [
     "January",
     "February",
@@ -86,24 +97,86 @@ router.post("/month", jsonParser, async (req, res) => {
     "December"
   ];
   try {
-    const newMonth = await Month.create({
+    const monthData = await Month.find({
       month,
-      month_name: monthsArr[month - 1]
+      year
     });
+    if (monthData.length !== 0) {
+      res
+        .status(420)
+        .json({
+          message: `Error; ${monthsArr[month - 1]} in year already exists`
+        })
+        .end();
+    } else {
+      const newMonth = await Month.create({
+        year,
+        month,
+        month_name: monthsArr[month - 1]
+      });
 
-    const year = await Year.findByIdAndUpdate(
-      yearId,
-      {
-        $push: {
-          months: newMonth._id
-        }
-      },
-      { upsert: true, new: true }
-    ).exec();
+      const yearData = await Year.findByIdAndUpdate(
+        yearId,
+        {
+          $push: {
+            months: newMonth._id
+          }
+        },
+        { upsert: true, new: true }
+      ).exec();
 
-    res.status(201).json({ message: "Month created", year, newMonth });
+      res.status(201).json({ message: "Month created", yearData, newMonth });
+    }
   } catch (err) {
-    res.status(422).json({ message: "could not create month" });
+    res.status(422).json({ err, message: "could not create month" });
+  }
+});
+
+router.get("/month/:id", async (req, res) => {
+  const monthId = req.params.id;
+
+  try {
+    const monthData = await Month.findById(monthId);
+    if (monthData) {
+      res.status(200).json({ monthData });
+    }
+  } catch (err) {
+    res
+      .status(422)
+      .json({ err, message: "Error; Could not retrieve month data" });
+  }
+});
+
+router.delete("/month/:id", async (req, res) => {
+  const monthId = req.params.id;
+
+  try {
+    // const deletedMonth = await Month.findOneAndDelete({
+    //   _id: monthId
+    // });
+    if (true) {
+      // const year = deletedMonth.year;
+      const year = 2018;
+      const yearData = await Year.findOneAndUpdate(
+        { year },
+        {
+          $pull: {
+            months: {
+              monthId
+            }
+          }
+        },
+        { new: true }
+      );
+
+      res.status(201).json({ message: "Ok: month deleted", yearData });
+    } else {
+      res
+        .status(402)
+        .json({ message: `Error: month with id ${monthId} does not exist` });
+    }
+  } catch (err) {
+    res.status(422).json({ err, message: "Error: Could not delete Month" });
   }
 });
 
@@ -134,11 +207,16 @@ router.post("/", jsonParser, async (req, res) => {
       url
     });
 
-    const updateMonth = await Month.findOneAndUpdate(monthId, {
-      $push: {
-        dates: newGig._id
-      }
-    });
+    const updateMonth = await Month.findOneAndUpdate(
+      monthId,
+      {
+        $push: {
+          dates: newGig._id
+        }
+      },
+      { upsert: true, new: true }
+    ).exec();
+
     res.status(201).json({ message: "Gig recorded succesfully ", updateMonth });
   } catch (err) {
     res.status(422).json({ err, message: "Error, could not post Gig" });
