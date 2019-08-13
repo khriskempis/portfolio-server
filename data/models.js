@@ -5,27 +5,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 mongoose.Promise = global.Promise;
 
-// Year
-
-const YearSchema = mongoose.Schema({
-  year: { type: Number },
-  months: [{ type: ObjectId, ref: "Month" }]
-});
-
-YearSchema.methods.serialize = function() {
-  return {
-    id: this._id,
-    year: this.year,
-    months: this.months
-  };
-};
-
-const Year = mongoose.model("Year", YearSchema);
-
 // Month
 
 const MonthSchema = mongoose.Schema({
-  yearId: { type: ObjectId, ref: "Year" },
   year: { type: Number },
   month_name: { type: String },
   month: { type: Number },
@@ -35,9 +17,9 @@ const MonthSchema = mongoose.Schema({
 MonthSchema.methods.serialize = function() {
   return {
     id: this._id,
-    yearId: this.yearId,
     year: this.year,
     month: this.month,
+    month_name: this.month_name,
     dates: this.dates
   };
 };
@@ -47,7 +29,7 @@ const Month = mongoose.model("Month", MonthSchema);
 // Gig
 
 const GigSchema = mongoose.Schema({
-  month: { type: ObjectId, ref: "Month" },
+  monthId: { type: ObjectId, ref: "Month" },
   days: { type: String },
   dates: { type: String },
   time: { type: String },
@@ -60,6 +42,7 @@ const GigSchema = mongoose.Schema({
 GigSchema.methods.serialize = function() {
   return {
     id: this._id,
+    monthId: this.monthId,
     days: this.days,
     dates: this.dates,
     time: this.time,
@@ -72,4 +55,4 @@ GigSchema.methods.serialize = function() {
 
 const Gig = mongoose.model("Gig", GigSchema);
 
-module.exports = { Year, Month, Gig };
+module.exports = { Month, Gig };
