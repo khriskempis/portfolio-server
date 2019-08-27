@@ -139,7 +139,7 @@ router.post("/", jsonParser, async (req, res) => {
       });
       // add gig to month
       const updateMonth = await Month.findOneAndUpdate(
-        monthId,
+        { _id: monthId },
         {
           $push: {
             dates: newGig._id
@@ -167,18 +167,19 @@ router.delete("/:id", async (req, res) => {
     if (gigData) {
       res.status(404).json({ message: "Error: Gig does not exist", gigData });
     } else {
-      const gig = await Gig.findOneAndDelete({ gigId });
+      const gig = await Gig.findOneAndDelete({ _id: gigId });
+      console.log(gig);
       if (gig) {
         const monthId = gig.monthId;
         const updateMonth = await Month.findByIdAndUpdate(
-          { monthId },
+          { _id: monthId },
           {
             $pull: {
-              dates: gig._id
+              dates: gigId
             }
           },
           { new: true }
-        );
+        ).exec();
         res.status(201).json({
           message: "Gig removed from database"
           // updatedMonth: updateMonth.serialize(),

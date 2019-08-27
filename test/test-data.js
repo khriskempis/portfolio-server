@@ -10,7 +10,9 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe("api/gigs", () => {
+  const GIGS_URL = "api/gigs/";
   const month = 1;
+  const monthName = "January";
   const year = 2019;
   before(() => {
     return runServer(TEST_DATABASE_URL);
@@ -30,10 +32,33 @@ describe("api/gigs", () => {
         try {
           const response = await chai
             .request(app)
-            .post("/api/gigs/month")
+            .set("Content-Type", "application/json")
+            .post(`${GIGS_URL}/month`)
             .send({ month, year });
-
+          console.log(response);
           expect(response).to.have.status(201);
+        } catch (err) {
+          if (err instanceof chai.AssertionError) {
+            throw err;
+          }
+        }
+      });
+    });
+
+    describe("Get", () => {
+      it("should return month", async () => {
+        try {
+          const monthData = await Month.create({
+            year,
+            month,
+            month_name: monthName
+          });
+
+          const response = await chai
+            .request(app)
+            .set("Content-Type", "application/json")
+            .get(`${GIGS_URL}/month/${monthData._id}`);
+          console.log(response.status);
         } catch (err) {
           if (err instanceof chai.AssertionError) {
             throw err;
