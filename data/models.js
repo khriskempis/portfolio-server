@@ -1,34 +1,58 @@
 "use strict";
 
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 mongoose.Promise = global.Promise;
 
+// Month
+
+const MonthSchema = mongoose.Schema({
+  year: { type: Number },
+  month_name: { type: String },
+  month: { type: Number },
+  dates: [{ type: ObjectId, ref: "Gig" }]
+});
+
+MonthSchema.methods.serialize = function() {
+  return {
+    id: this._id,
+    year: this.year,
+    month: this.month,
+    month_name: this.month_name,
+    dates: this.dates
+  };
+};
+
+const Month = mongoose.model("Month", MonthSchema);
+
+// Gig
+
 const GigSchema = mongoose.Schema({
-  month: { type: String },
+  monthId: { type: ObjectId, ref: "Month" },
   days: { type: String },
   dates: { type: String },
   time: { type: String },
   name: { type: String },
   type: { type: String },
-  location_name: { type: String },
-  location_url: { type: String }
+  location: { type: String },
+  url: { type: String }
 });
 
 GigSchema.methods.serialize = function() {
   return {
     id: this._id,
-    month: this.month,
+    monthId: this.monthId,
     days: this.days,
     dates: this.dates,
     time: this.time,
     name: this.name,
     type: this.type,
-    location_name: this.location_name,
-    location_url: this.location_url
+    location: this.location_name,
+    url: this.url
   };
 };
 
-const Gigs = mongoose.model("Gigs", GigSchema);
+const Gig = mongoose.model("Gig", GigSchema);
 
-module.exports = { Gigs };
+module.exports = { Month, Gig };

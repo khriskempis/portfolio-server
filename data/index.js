@@ -1,6 +1,7 @@
 "use strict";
 
-const { Gig } = require("./models");
+const { Gig, Month } = require("./models");
+
 const { router } = require("./router");
 
-module.exports = { Gig, router };
+module.exports = { Gig, Month, router };

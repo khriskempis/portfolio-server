@@ -23,8 +23,8 @@ app.use(express.static("public"));
 
 app.use("/api/gigs/", gigRouter);
 
-app.use("*", (req, res) => {
-  return res.status(404).json({ message: "Catch all; Server Error" });
+app.use("*", (req, res, err) => {
+  return res.status(404).json({ err, message: "Catch all; Server Error" });
 });
 
 let server;
