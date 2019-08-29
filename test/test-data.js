@@ -6,6 +6,7 @@ const { TEST_DATABASE_URL } = require("../config");
 const { Gig, Month } = require("../data");
 
 const expect = chai.expect;
+const should = chai.should();
 
 chai.use(chaiHttp);
 
@@ -14,6 +15,7 @@ describe("api/gigs", () => {
   const month = 1;
   const monthName = "January";
   const year = 2019;
+
   before(() => {
     return runServer(TEST_DATABASE_URL);
   });
@@ -27,59 +29,43 @@ describe("api/gigs", () => {
   });
 
   describe("/month", () => {
-    describe("Post", () => {
-      it("should create month", async () => {
-        try {
-          const response = await chai
-            .request(app)
-            .set("Content-Type", "application/json")
-            .post(`${GIGS_URL}/month`)
-            .send({ month, year });
-          console.log(response);
-          expect(response).to.have.status(201);
-        } catch (err) {
-          if (err instanceof chai.AssertionError) {
-            throw err;
-          }
-        }
-      });
+    it("should create month", async () => {
+      const response = await chai
+        .request(app)
+        // .set("Content-Type", "application/json")
+        .post(`${GIGS_URL}/month`)
+        .send({ month, year });
+      // console.log(response);
+      expect(response).to.be(null);
+      response.should.have.length(0);
     });
 
-    describe("Get", () => {
-      // it("should return month", async () => {
-      //   try {
-      //     const monthData = await Month.create({
-      //       year,
-      //       month,
-      //       month_name: monthName
-      //     });
-
-      //     const response = await chai
-      //       .request(app)
-      //       .set("Content-Type", "application/json")
-      //       .get(`${GIGS_URL}/month/${monthData._id}`);
-      //     console.log(response.status);
-      //   } catch (err) {
-      //     if (err instanceof chai.AssertionError) {
-      //       throw err;
-      //     }
-      //   }
-      // });
-      it("should return month", () => {
-        return Month.create({
-          year,
-          month,
-          month_name: monthName
-        }).then(monthData => {
-          return chai
-            .request(app)
-            .get(`${GIGS_URL}/month/${monthData._id}`)
-            .then(res => {
-              expect(res).to.have.status(201);
-            });
-        });
+    it("should return month", async () => {
+      const monthData = await Month.create({
+        year,
+        month,
+        month_name: monthName
       });
+
+      const response = await chai
+        .request(app)
+        // .set("Content-Type", "application/json")
+        .get(`${GIGS_URL}/month/${monthData._id}`);
+      console.log(response.status);
     });
+    // it("should return month", async () => {
+    //   const monthData = await Month.create({
+    //     year,
+    //     month,
+    //     month_name: monthName
+    //   });
+
+    //   const res = await chai
+    //     .request(app)
+    //     .get(`${GIGS_URL}/month/${monthData._id}`);
+
+    //   expect(res).to.have.status(201);
+    // });
   });
   // describe("Gig route", () => {
   //   describe("Post", () => {
