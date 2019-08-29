@@ -62,7 +62,7 @@ router.get("/month/:id", async (req, res) => {
   const monthId = req.params.id;
 
   try {
-    const monthData = await Month.findById(monthId);
+    const monthData = await Month.findById(monthId).populate("dates");
     if (monthData) {
       res.status(200).json(monthData.serialize());
     } else {
@@ -142,7 +142,7 @@ router.post("/", jsonParser, async (req, res) => {
         { _id: monthId },
         {
           $push: {
-            dates: newGig._id
+            dates: newGig
           }
         },
         { upsert: true, new: true }
@@ -163,38 +163,30 @@ router.delete("/:id", async (req, res) => {
   const gigId = req.params.id;
 
   try {
-    const gigData = await Gig.findOne({ gigId });
-    if (gigData) {
+    const gigData = await Gig.findById(gigId);
+    if (!gigData) {
       res.status(404).json({ message: "Error: Gig does not exist", gigData });
     } else {
-      const gig = await Gig.findOneAndDelete({ _id: gigId });
-      console.log(gig);
-      if (gig) {
-        const monthId = gig.monthId;
-        const updateMonth = await Month.findByIdAndUpdate(
-          { _id: monthId },
-          {
-            $pull: {
-              dates: gigId
-            }
-          },
-          { new: true }
-        ).exec();
-        res.status(201).json({
-          message: "Gig removed from database"
-          // updatedMonth: updateMonth.serialize(),
-          // gig: gig.serialize()
-        });
-      } else {
-        res.status(404).json({
-          message: "Error: could not delete gig",
-          updateMonth,
-          monthId
-        });
-      }
+      const gig = await Gig.findByIdAndDelete(gigId);
+      const monthId = gig.monthId;
+      const updateMonth = await Month.findByIdAndUpdate(
+        monthId,
+        {
+          $pull: {
+            dates: gigId
+          }
+        },
+        { new: true }
+      );
+
+      res.status(201).json({
+        message: "Gig removed from database",
+        updatedMonth: updateMonth.serialize(),
+        removedGig: gig.serialize()
+      });
     }
   } catch (err) {
-    res.status(422).json({ message: "Error, could not delete gig" });
+    res.status(422).json({ err, message: "Error, could not delete gig" });
   }
 });
 
