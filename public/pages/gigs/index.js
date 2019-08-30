@@ -1,10 +1,10 @@
 const BASE_URL = "http://localhost:8080/api";
-const YEAR_2018 = 2018;
+const YEAR = 2018;
 
 $.ajax({
   method: "GET",
   url: BASE_URL + "/gigs/month",
-  data: { year: YEAR_2018 }
+  data: { year: YEAR }
 }).done(data => {
   console.log(data);
   if (data.monthData.length == 0) {
