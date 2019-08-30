@@ -10,7 +10,7 @@ $xl-size: 4.8rem;
 $desktop-breakpoint: 45rem;
 
 //Fonts
-$roboto: 'Roboto', sans-serif;
+$roboto: "Roboto", sans-serif;
 
 // Break Points
 
@@ -18,26 +18,28 @@ $break-small: 375px;
 $break-medium: 765px;
 $break-large: 1024px;
 
-
 @mixin respond-to($media) {
   @if $media == handhelds {
-    @media only screen and (min-width: $break-small) { @content; }
-  }
-  @else if $media == medium-screens {
-    @media only screen and (min-width: $break-medium + 1) { @content; }
-  }
-  @else if $media == large-screens { 
-    @media only screen and (min-width: $break-large) { @content; }
+    @media only screen and (min-width: $break-small) {
+      @content;
+    }
+  } @else if $media == medium-screens {
+    @media only screen and (min-width: $break-medium + 1) {
+      @content;
+    }
+  } @else if $media == large-screens {
+    @media only screen and (min-width: $break-large) {
+      @content;
+    }
   }
 }
 
 // Color Palette
 
-$primary-color: #0573B3;
-$accent-color: #FA9F26;
-$dark-blue: #1B4D6D;
+$primary-color: #0573b3;
+$accent-color: #fa9f26;
+$dark-blue: #1b4d6d;
 $off-white: #f7f7f7;
-
 
 // ===== BASE STYLES =====
 * {
@@ -85,7 +87,7 @@ nav {
     width: 60px;
     border-radius: 100%;
     overflow: hidden;
-    @include respond-to(handhelds){
+    @include respond-to(handhelds) {
       width: 100px;
       height: 100px;
     }
@@ -95,12 +97,12 @@ nav {
       background: url(../assets/headshot.jpg) 80% 5%;
       background-size: cover;
       background-size: 130%;
-      @include respond-to(medium-screens){
+      @include respond-to(medium-screens) {
         background-size: 130%;
       }
     }
   }
-  .nav-links{
+  .nav-links {
     font-size: 1.5rem;
     display: flex;
     a {
@@ -111,7 +113,7 @@ nav {
         color: $primary-color;
       }
     }
-    @include respond-to(medium-screens){
+    @include respond-to(medium-screens) {
       font-size: 1.9rem;
       a {
         margin: 0 $m-size;
@@ -119,7 +121,6 @@ nav {
     }
   }
 }
-
 
 // ===== HEADER =====
 
@@ -129,14 +130,14 @@ header {
   opacity: 1;
   .hero {
     max-width: 1024px;
-    width: 80%; 
+    width: 80%;
     margin: 20% auto;
     h1 {
       font-weight: 300;
       font-size: 33px;
       margin: 0;
     }
-    ul { 
+    ul {
       margin: 0;
     }
     .music-word {
@@ -154,11 +155,11 @@ header {
       .developer-word {
         display: none;
       }
-      .none{
-        display: none
+      .none {
+        display: none;
       }
       @include respond-to(medium-screens) {
-        font-size: 30px; 
+        font-size: 30px;
         .iAm {
           right: 70px;
           width: 95px;
@@ -174,7 +175,7 @@ header {
       margin-top: 2%;
       font-size: 1.6rem;
     }
-    
+
     a {
       text-decoration: none;
       text-align: center;
@@ -190,13 +191,13 @@ header {
       max-width: 150px;
     }
   }
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     .hero {
       margin: 10% auto;
       h1 {
         font-size: 4rem;
       }
-      p{
+      p {
         width: 50%;
         font-size: 2rem;
         margin-top: 1%;
@@ -212,12 +213,10 @@ header {
   }
 }
 
-
-
 // ===== MAIN =====
 
 .main {
-  background-color: #FAFCFF;
+  background-color: #fafcff;
   margin-top: 5%;
   position: relative;
   overflow: hidden;
@@ -239,13 +238,13 @@ header {
     max-width: 900px;
     margin: 0 auto;
   }
-    @include respond-to(medium-screens) { 
-      .container {
-        max-height: 600px;
-        display: flex;
-        justify-content: space-around;
-      }
-    } 
+  @include respond-to(medium-screens) {
+    .container {
+      max-height: 600px;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
 }
 
 // ===== PROJECTS =====
@@ -253,15 +252,15 @@ header {
 .section-header {
   display: inline-block;
   padding-bottom: 5px;
-  border-bottom: 3px solid #FA9F26;
+  border-bottom: 3px solid #fa9f26;
   font-size: 20px;
   font-weight: 400;
 }
 
 .projects {
-  margin-top: 10%; 
-  @include respond-to(large-screens) { 
-    margin-top: 0; 
+  margin-top: 10%;
+  @include respond-to(large-screens) {
+    margin-top: 0;
   }
   .title {
     font-size: 160%;
@@ -269,9 +268,11 @@ header {
   }
   .github-link {
     display: block;
-    margin: 4% 0; 
+    margin: 4% 0;
   }
-  #music-test, #data-breach, #inventory {
+  #music-test,
+  #data-breach,
+  #inventory {
     flex-direction: row-reverse;
   }
   .img-container {
@@ -307,7 +308,6 @@ header {
       background-size: cover;
     }
   }
-  
 
   .project-info {
     width: 90%;
@@ -343,7 +343,7 @@ header {
 hr {
   width: 50%;
   margin: 15% auto;
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     margin: 10% auto;
   }
 }
@@ -359,7 +359,7 @@ hr {
     font-size: 14px;
     border-radius: 5px;
   }
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     .secondary-button {
       padding: 10px 15px;
       font-size: 16px;
@@ -387,7 +387,7 @@ hr {
 .about {
   width: 90%;
   margin: 0 auto;
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     margin: 0 20px;
     width: 60%;
   }
@@ -404,7 +404,7 @@ hr {
     margin: 5px 0;
     border-radius: 50px;
   }
-  tr:nth-child(odd){
+  tr:nth-child(odd) {
     background: #ccdde938;
   }
   td {
@@ -421,7 +421,7 @@ hr {
   .type {
     font-size: 10px;
   }
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     font-size: 16px;
     .name {
       font-size: 14px;
@@ -431,7 +431,6 @@ hr {
     }
   }
 }
-
 
 // ===== FOOTER =====
 
@@ -464,7 +463,6 @@ footer {
   }
 }
 
-
 // =======================
 // ==== PROJECT PAGE =====
 // =======================
@@ -473,14 +471,15 @@ footer {
   margin-top: 0;
 }
 
-
-
 // =======================
 // ====== GIGS PAGE ======
 // =======================
 
 .gigs-main {
   background: #fff;
+  .error-message {
+    text-align: center;
+  }
   .gig-table {
     margin: 1em auto 3em;
     width: 100%;
@@ -490,7 +489,7 @@ footer {
       margin: 5px 0;
       border-radius: 50px;
     }
-    tr:nth-child(odd){
+    tr:nth-child(odd) {
       background: #ccdde938;
     }
     td {
@@ -508,7 +507,7 @@ footer {
     .type {
       font-size: 10px;
     }
-    @include respond-to(medium-screens){
+    @include respond-to(medium-screens) {
       font-size: 15px;
       .name {
         font-size: 14px;
@@ -518,7 +517,6 @@ footer {
       }
     }
   }
-
 }
 .month {
   width: 100%;
@@ -526,7 +524,7 @@ footer {
   h4 {
     margin-bottom: 0;
   }
-  @include respond-to(medium-screens){
+  @include respond-to(medium-screens) {
     width: 80%;
   }
 }

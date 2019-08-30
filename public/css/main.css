@@ -17,8 +17,8 @@ body {
   font-family: "Roboto", sans-serif;
   font-size: 1.6rem;
   line-height: 1.6;
-  color: #1B4D6D;
-  border-top: 4px solid #0573B3;
+  color: #1b4d6d;
+  border-top: 4px solid #0573b3;
 }
 
 ul {
@@ -81,11 +81,11 @@ nav .nav-links {
 nav .nav-links a {
   text-decoration: none;
   margin: 0 1.2rem;
-  color: #0573B3;
+  color: #0573b3;
 }
 
 nav .nav-links a:visited {
-  color: #0573B3;
+  color: #0573b3;
 }
 
 @media only screen and (min-width: 766px) {
@@ -174,7 +174,7 @@ header .hero a {
   width: 40%;
   padding: 10px;
   border-radius: 5px;
-  background-color: #FA9F26;
+  background-color: #fa9f26;
   color: #fff;
   font-size: 1.2rem;
   letter-spacing: 0.5px;
@@ -203,7 +203,7 @@ header .hero a {
 }
 
 .main {
-  background-color: #FAFCFF;
+  background-color: #fafcff;
   margin-top: 5%;
   position: relative;
   overflow: hidden;
@@ -215,7 +215,7 @@ header .hero a {
 }
 
 .main a {
-  color: #1B4D6D;
+  color: #1b4d6d;
   margin: 0 5px;
 }
 
@@ -245,7 +245,7 @@ header .hero a {
 .section-header {
   display: inline-block;
   padding-bottom: 5px;
-  border-bottom: 3px solid #FA9F26;
+  border-bottom: 3px solid #fa9f26;
   font-size: 20px;
   font-weight: 400;
 }
@@ -270,7 +270,9 @@ header .hero a {
   margin: 4% 0;
 }
 
-.projects #music-test, .projects #data-breach, .projects #inventory {
+.projects #music-test,
+.projects #data-breach,
+.projects #inventory {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: reverse;
       -ms-flex-direction: row-reverse;
@@ -369,8 +371,8 @@ hr {
 }
 
 .view-button-container .secondary-button {
-  color: #FA9F26 !important;
-  border: 2px solid #FA9F26;
+  color: #fa9f26 !important;
+  border: 2px solid #fa9f26;
   text-decoration: none;
   padding: 8px 10px;
   font-size: 14px;
@@ -460,7 +462,7 @@ hr {
 
 footer {
   color: #f7f7f7;
-  background-color: #1B4D6D;
+  background-color: #1b4d6d;
   font-size: 1.3rem;
   padding-bottom: 30px;
 }
@@ -492,7 +494,7 @@ footer .contact-links li {
 footer .contact-links a svg {
   height: 50px;
   width: 30px !important;
-  color: #FA9F26;
+  color: #fa9f26;
 }
 
 .project-main {
@@ -501,6 +503,10 @@ footer .contact-links a svg {
 
 .gigs-main {
   background: #fff;
+}
+
+.gigs-main .error-message {
+  text-align: center;
 }
 
 .gigs-main .gig-table {

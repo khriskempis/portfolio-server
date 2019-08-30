@@ -6,8 +6,23 @@ $.ajax({
   url: BASE_URL + "/gigs/month",
   data: { year: YEAR_2018 }
 }).done(data => {
-  handleResponse(data);
+  console.log(data);
+  if (data.monthData.length == 0) {
+    handleError();
+  } else {
+    handleResponse(data);
+  }
 });
+
+function handleError() {
+  const gigSection = $("#gig-section");
+  const errorHTML = `
+    <div class="error-message">
+      <h1>Sorry, no new gigs this year!</h1>
+    </div>
+  `;
+  gigSection.html(errorHTML);
+}
 
 // function that's called when data is returned
 function handleResponse(response) {
