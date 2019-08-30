@@ -58,11 +58,27 @@ router.post("/month", jsonParser, async (req, res) => {
   }
 });
 
+router.get("/month/", async (req, res) => {
+  const year = req.query.year;
+  try {
+    const monthData = await Month.find({ year })
+      .select("-__v")
+      .populate("dates", "-__v -monthId");
+
+    res.status(200).json({ monthData });
+  } catch (err) {
+    res.status(404).json({ message: "Error; could not retrieve data" });
+  }
+});
+
 router.get("/month/:id", async (req, res) => {
   const monthId = req.params.id;
 
   try {
-    const monthData = await Month.findById(monthId).populate("dates");
+    const monthData = await Month.findById(monthId).populate(
+      "dates",
+      "-__v -monthId"
+    );
     if (monthData) {
       res.status(200).json(monthData.serialize());
     } else {
