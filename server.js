@@ -1,7 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const { router: gigRouter } = require("./data");
+const { gigRouter } = require("./server/data");
+const { userRouter } = require("./server/user");
+
 const { PORT, DATABASE_URL } = require("./config");
 
 mongoose.Promise = global.Promise;
@@ -21,6 +23,7 @@ app.use(function(req, res, next) {
 
 app.use(express.static("public"));
 
+app.use("/api/user/", userRouter);
 app.use("/api/gigs/", gigRouter);
 
 app.use("*", (req, res, err) => {
