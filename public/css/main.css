@@ -570,4 +570,12 @@ footer .contact-links a svg {
     width: 80%;
   }
 }
+
+.user-form {
+  display: none;
+}
+
+.active {
+  display: block;
+}
 /*# sourceMappingURL=main.css.map */

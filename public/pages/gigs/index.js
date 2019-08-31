@@ -6,7 +6,6 @@ $.ajax({
   url: BASE_URL + "/gigs/month",
   data: { year: YEAR }
 }).done(data => {
-  console.log(data);
   if (data.monthData.length == 0) {
     handleError();
   } else {
@@ -33,7 +32,7 @@ function handleResponse(response) {
 
 // builds gig table data
 function parseGigDataAndGenerateHtml(data) {
-  let gigHtml = "";
+  let gigHtml = `<h3 class="section-header">Gigs</h3>`;
   for (let month of data) {
     gigHtml += generateMonthData(month, month.dates.length);
   }
@@ -65,3 +64,24 @@ function generateGigDataHtml(data) {
     </td>`;
   return (htmlString += "</tr>");
 }
+
+function loginUser(userData) {
+  console.log(userData);
+}
+
+function handleButton() {
+  $(".update").on("click", () => {
+    $(".user-form").toggle("active");
+  });
+
+  $(".user-form").on("submit", event => {
+    event.preventDefault();
+
+    return loginUser({
+      username: $(".un").val(),
+      password: $(".p").val()
+    });
+  });
+}
+
+handleButton();
