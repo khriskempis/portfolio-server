@@ -2,13 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const { User } = require("./models");
+const { JWT_SECRET: secret } = require("../../config");
 
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
 
 router.post("/", jsonParser, async (req, res) => {
-  let { username, password, firstName, lastName } = req.body;
+  let { username, password, firstName, lastName, keyWord } = req.body;
+
+  if (!keyWord || keyWord !== secret) {
+    return res.status(404).json({
+      message: "Error: Unauthorized User Access. KeyWord Invalid."
+    });
+  }
 
   firstName = firstName.trim();
   lastName = lastName.trim();
