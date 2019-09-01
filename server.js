@@ -1,14 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const passport = require("passport");
+const morgan = require("morgan");
 
 const { gigRouter } = require("./server/data");
 const { userRouter } = require("./server/user");
+const {
+  router: authRouter,
+  localStrategy,
+  jwtStrategy
+} = require("./server/auth");
 
 const { PORT, DATABASE_URL } = require("./config");
 
 mongoose.Promise = global.Promise;
 
 const app = express();
+
+app.use(express.static("public"));
+app.use(morgan("common"));
 
 //CORS
 app.use(function(req, res, next) {
@@ -21,8 +31,12 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static("public"));
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
+// const jwtAuth = passport.authenticate("jwt", { session: false });
+
+app.use("/api/auth/", authRouter);
 app.use("/api/user/", userRouter);
 app.use("/api/gigs/", gigRouter);
 
