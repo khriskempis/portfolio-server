@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const { Month, Gig } = require("./models");
+const { JWT_SECRET: secret } = require("../../config");
 
 const router = express.Router();
 
@@ -16,8 +17,19 @@ mongoose.set("debug", true);
 
 // Month route
 
+function authKeyword(res) {
+  return res.status(401).json({
+    message: "Unauthorized Access; Invalid Keyword"
+  });
+}
+
 router.post("/month", jsonParser, async (req, res) => {
-  const { month, year } = req.body;
+  const { month, year, keyword } = req.body;
+
+  if (!keyword || keyword !== secret) {
+    return authKeyword(res);
+  }
+
   const monthNameArr = [
     "January",
     "February",
@@ -128,7 +140,21 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", jsonParser, async (req, res) => {
-  const { monthId, days, dates, time, name, type, location, url } = req.body;
+  const {
+    monthId,
+    days,
+    dates,
+    time,
+    name,
+    type,
+    location,
+    url,
+    keyword
+  } = req.body;
+
+  if (!keyword || keyword !== secret) {
+    return authKeyword(res);
+  }
 
   // check for duplicate gig
   try {
