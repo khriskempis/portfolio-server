@@ -6,12 +6,14 @@ const { Strategy: JwtStrategy, ExtractJwt } = require("passport-jwt");
 const { User } = require("../user/models");
 const { JWT_SECRET: secret } = require("../../config");
 
+// add Promise rejection, still need to fix
+
 const localStrategy = new LocalStrategy(
   async (username, password, callback) => {
     try {
       const user = await User.find({ username });
       if (user.length !== 0) {
-        return res.status(401).json({
+        return Promise.reject({
           status: "LoginError",
           message: "Error: Invalid Username or Password"
         });
