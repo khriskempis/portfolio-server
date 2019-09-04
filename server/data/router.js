@@ -15,14 +15,30 @@ const jsonParser = bodyParser.json();
 mongoose.set("useFindAndModify", false);
 mongoose.set("debug", true);
 
-// Month route
+const monthNameArr = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 
+// helper functions
 function authKeyword(res) {
   return res.status(401).json({
     message: "Unauthorized Access; Invalid Keyword"
   });
 }
+// create handle error function
 
+// Month route
 router.post("/month", jsonParser, async (req, res) => {
   const { month, year, keyword } = req.body;
 
@@ -30,27 +46,13 @@ router.post("/month", jsonParser, async (req, res) => {
     return authKeyword(res);
   }
 
-  const monthNameArr = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
   try {
-    const monthData = await Month.find({
+    const monthData = await Month.findOne({
       month,
       year
     });
     const monthName = monthNameArr[month - 1];
-    if (monthData.length !== 0) {
+    if (monthData) {
       res.status(420).json({
         message: `Error; ${monthName} in ${year} already exists`
       });
@@ -105,12 +107,14 @@ router.get("/month/:id", async (req, res) => {
   }
 });
 
-router.delete("/month/:id", async (req, res) => {
-  const monthId = req.params.id;
+router.delete("/month/:month", async (req, res) => {
+  const month = req.params.month;
+
+  // add functionality to delete gigs along with month
 
   try {
     const deletedMonth = await Month.findOneAndDelete({
-      _id: monthId
+      month
     });
     if (deletedMonth) {
       res.status(200).json({ message: "Ok: month deleted", deletedMonth });
@@ -141,7 +145,8 @@ router.get("/", async (req, res) => {
 
 router.post("/", jsonParser, async (req, res) => {
   const {
-    monthId,
+    month,
+    year,
     days,
     dates,
     time,
@@ -158,16 +163,36 @@ router.post("/", jsonParser, async (req, res) => {
 
   // check for duplicate gig
   try {
-    const gigData = await Gig.find({
+    const gigData = await Gig.findOne({
       days,
       dates
     });
-    if (gigData.length !== 0) {
-      res.status(406).json({
+    if (gigData) {
+      return res.status(405).json({
         message: "Error: Gig data already exists",
         gigData
       });
     } else {
+      // get Month
+      let monthData = await Month.findOne({
+        month,
+        year
+      });
+
+      let newMonth;
+
+      if (!monthData) {
+        const monthName = monthNameArr[month - 1];
+
+        newMonth = await Month.create({
+          year,
+          month,
+          month_name: monthName
+        });
+      }
+      const monthId = monthData._id || newMonth._id;
+
+      console.log(monthId);
       // create gig
       const newGig = await Gig.create({
         monthId,
@@ -187,13 +212,13 @@ router.post("/", jsonParser, async (req, res) => {
             dates: newGig
           }
         },
-        { upsert: true, new: true }
+        { upsert: false, new: true }
       ).exec();
 
       res.status(201).json({
         message: "Gig recorded succesfully ",
         updateMonth,
-        newGig
+        newGig: newGig.serialize()
       });
     }
   } catch (err) {
