@@ -534,8 +534,9 @@ footer {
   text-align: left;
   margin: 0 auto;
   form {
-    width: 30%;
-    margin: 0 auto;
+    width: 80%;
+    max-width: 300px;
+    margin: 50px auto;
     position: relative;
     .row {
       display: flex;
@@ -543,13 +544,17 @@ footer {
       margin: 10px;
     }
     input {
-      background-color: white;
+      background-color: #fcfcfc;
       width: 50%;
     }
     button {
       background-color: white;
       position: absolute;
       right: 8px;
+    }
+    @include respond-to(medium-screens) {
+      width: 50%;
+      max-width: 300px;
     }
   }
 }

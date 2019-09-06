@@ -1,5 +1,7 @@
 const BASE_URL = "http://localhost:8080/api";
-const YEAR = 2018;
+const YEAR = 2019;
+
+// Gig Table Data
 
 $.ajax({
   method: "GET",
@@ -7,24 +9,24 @@ $.ajax({
   data: { year: YEAR }
 }).done(data => {
   if (data.monthData.length == 0) {
-    handleError();
+    handleError("#gig-section", "Sorry, no new gigs this year!");
   } else {
-    handleResponse(data);
+    handleGigResponse(data);
   }
 });
 
-function handleError() {
-  const gigSection = $("#gig-section");
+function handleError(node, errStr) {
+  const gigSection = $(node);
   const errorHTML = `
     <div class="error-message">
-      <h1>Sorry, no new gigs this year!</h1>
+      <h1>${errStr}</h1>
     </div>
   `;
   gigSection.html(errorHTML);
 }
 
 // function that's called when data is returned
-function handleResponse(response) {
+function handleGigResponse(response) {
   const gigSection = $("#gig-section");
   let gigTableData = parseGigDataAndGenerateHtml(response.monthData);
   gigSection.html(gigTableData);
@@ -65,6 +67,8 @@ function generateGigDataHtml(data) {
   return (htmlString += "</tr>");
 }
 
+// Submitting Gig Data
+
 function parseDate(date) {
   // use Regx, much easier to parse data
   let dateArr = date.split("-");
@@ -86,7 +90,14 @@ function parseDate(date) {
 }
 
 function submitGigData(gigData) {
-  console.log(gigData);
+  $.ajax({
+    method: "POST",
+    url: BASE_URL + "/gigs/",
+    data: JSON.stringify(gigData),
+    contentType: "application/json"
+  }).done(res => {
+    console.log(res.status, res.message);
+  });
 }
 
 function handleButton() {

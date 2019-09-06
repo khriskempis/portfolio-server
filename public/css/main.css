@@ -578,8 +578,9 @@ footer .contact-links a svg {
 }
 
 .user-form form {
-  width: 30%;
-  margin: 0 auto;
+  width: 80%;
+  max-width: 300px;
+  margin: 50px auto;
   position: relative;
 }
 
@@ -594,7 +595,7 @@ footer .contact-links a svg {
 }
 
 .user-form form input {
-  background-color: white;
+  background-color: #fcfcfc;
   width: 50%;
 }
 
@@ -602,6 +603,13 @@ footer .contact-links a svg {
   background-color: white;
   position: absolute;
   right: 8px;
+}
+
+@media only screen and (min-width: 766px) {
+  .user-form form {
+    width: 50%;
+    max-width: 300px;
+  }
 }
 
 .active {
