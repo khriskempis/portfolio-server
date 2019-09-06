@@ -573,9 +573,43 @@ footer .contact-links a svg {
 
 .user-form {
   display: none;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.user-form form {
+  width: 30%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.user-form form .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 10px;
+}
+
+.user-form form input {
+  background-color: white;
+  width: 50%;
+}
+
+.user-form form button {
+  background-color: white;
+  position: absolute;
+  right: 8px;
 }
 
 .active {
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 /*# sourceMappingURL=main.css.map */

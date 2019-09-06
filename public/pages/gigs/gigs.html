@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="shortcut icon" type="image/ico" href="./assets/favicon.ico">
+  <!-- <link rel="shortcut icon" type="image/ico" href="./assets/favicon.ico"> -->
   <link rel="stylesheet" href="../../css/main.css">
   <title>Gigs</title>
 </head>
@@ -24,6 +24,48 @@
         <!-- Gig Data generated from Server -->
       </section>
     </section>
+    <div class="user-form">
+        <form>  
+          <div class="row">
+            <label for="month">Month</label>
+            <input name="month" type="month" class="month-data">
+          </div>
+          <div class="row">
+            <label for="days">Days</label>
+            <input type="text" name="days" class="days-data">
+          </div>
+          <div class="row">
+            <label for="dates">Dates</label>
+            <input type="text" name="dates" class="dates-data">
+          </div>
+          <div class="row">
+            <label for="time">Time</label>
+            <input type="text" name="time" class="time-data">
+          </div>
+          <div class="row">
+            <label for="name">Name</label>
+            <input type="text" name="name" class="name-data">
+          </div>
+          <div class="row">
+            <label for="type">Type</label>
+            <input type="text" name="type" class="type-data">
+          </div>
+          <div class="row">
+            <label for="location">Location</label>
+            <input type="text" name="location" class="location-data">
+          </div>
+          <div class="row">
+            <label for="url">URL Link</label>
+            <input type="text" name="url" class="url-data">
+          </div>
+          <div class="row">
+            <label for="keyword">Keyword</label>
+            <input type="password" class="keyword-data">
+          </div>
+
+          <button type="submit">Enter</button>
+        </form>
+      </div>
     <footer> 
       <ul class="contact-links">
         <li>
@@ -41,13 +83,6 @@
       </ul>
       <div class="copyright-container">
         <h3>Khris-Raymond Kempis 2019 <span class="update">&#169;</span></h3>
-        <div class="user-form">
-          <form>  
-            <input class="un" type="text">
-            <input class="p" type="password">
-            <button type="submit">Enter</button>
-          </form>
-        </div>
       </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

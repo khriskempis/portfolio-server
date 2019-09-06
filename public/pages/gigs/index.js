@@ -65,8 +65,28 @@ function generateGigDataHtml(data) {
   return (htmlString += "</tr>");
 }
 
-function loginUser(userData) {
-  console.log(userData);
+function parseDate(date) {
+  // use Regx, much easier to parse data
+  let dateArr = date.split("-");
+  let monthArr = dateArr[1].split("");
+  let year = +dateArr[0];
+  let month;
+
+  if (monthArr[0] === 0) {
+    // type coercion from string to number
+    month = +monthArr[1];
+  } else {
+    month = +dateArr[1];
+  }
+
+  return {
+    year,
+    month
+  };
+}
+
+function submitGigData(gigData) {
+  console.log(gigData);
 }
 
 function handleButton() {
@@ -77,9 +97,19 @@ function handleButton() {
   $(".user-form").on("submit", event => {
     event.preventDefault();
 
-    return loginUser({
-      username: $(".un").val(),
-      password: $(".p").val()
+    let dateData = parseDate($(".month-data").val());
+
+    return submitGigData({
+      month: dateData.month,
+      year: dateData.year,
+      days: $(".days-data").val(),
+      dates: $(".dates-data").val(),
+      time: $(".time-data").val(),
+      name: $(".name-data").val(),
+      type: $(".type-data").val(),
+      location: $(".location-data").val(),
+      url: $(".url-data").val(),
+      keyword: $(".keyword-data").val()
     });
   });
 }

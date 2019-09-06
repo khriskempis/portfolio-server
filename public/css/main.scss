@@ -531,8 +531,30 @@ footer {
 
 .user-form {
   display: none;
+  text-align: left;
+  margin: 0 auto;
+  form {
+    width: 30%;
+    margin: 0 auto;
+    position: relative;
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px;
+    }
+    input {
+      background-color: white;
+      width: 50%;
+    }
+    button {
+      background-color: white;
+      position: absolute;
+      right: 8px;
+    }
+  }
 }
 
 .active {
-  display: block;
+  display: flex;
+  justify-content: space-between;
 }
