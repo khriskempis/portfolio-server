@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:8080/api";
-const YEAR = 2019;
+const YEAR = 2018;
 
 // Gig Table Data
 
@@ -35,7 +35,11 @@ function handleGigResponse(response) {
 // builds gig table data
 function parseGigDataAndGenerateHtml(data) {
   let gigHtml = `<h3 class="section-header">Gigs</h3>`;
-  for (let month of data) {
+  // sorts month in descending order
+  let sortedMonths = data.sort((a, b) => {
+    return b.month - a.month;
+  });
+  for (let month of sortedMonths) {
     gigHtml += generateMonthData(month, month.dates.length);
   }
   return gigHtml;
@@ -47,8 +51,16 @@ function generateMonthData(data, numData) {
     <h4>${data.month_name}</h4>
   <table class="gig-table">`;
 
+  // finds dates and sorts from descending order
+  let sortedDates = data.dates.sort((a, b) => {
+    let regEx = /\/(\d+)/;
+    let Aregex = regEx.exec(a.dates);
+    let Bregex = regEx.exec(b.dates);
+    return Bregex[1] - Aregex[1];
+  });
+
   for (let i = 0; i < numData; i++) {
-    htmlString += generateGigDataHtml(data.dates[i]);
+    htmlString += generateGigDataHtml(sortedDates[i]);
   }
   return (htmlString += "</table></div>");
 }
@@ -95,9 +107,13 @@ function submitGigData(gigData) {
     url: BASE_URL + "/gigs/",
     data: JSON.stringify(gigData),
     contentType: "application/json"
-  }).done(res => {
-    console.log(res.status, res.message);
-  });
+  })
+    .done(res => {
+      console.log(res, res.message);
+    })
+    .catch(err => {
+      console.log(err, err.responseText);
+    });
 }
 
 function handleButton() {
@@ -108,20 +124,32 @@ function handleButton() {
   $(".user-form").on("submit", event => {
     event.preventDefault();
 
-    let dateData = parseDate($(".month-data").val());
+    // let dateData = parseDate($(".month-data").val());
 
-    return submitGigData({
-      month: dateData.month,
-      year: dateData.year,
-      days: $(".days-data").val(),
-      dates: $(".dates-data").val(),
-      time: $(".time-data").val(),
-      name: $(".name-data").val(),
-      type: $(".type-data").val(),
-      location: $(".location-data").val(),
-      url: $(".url-data").val(),
-      keyword: $(".keyword-data").val()
-    });
+    // return submitGigData({
+    //   month: dateData.month,
+    //   year: dateData.year,
+    //   days: $(".days-data").val(),
+    //   dates: $(".dates-data").val(),
+    //   time: $(".time-data").val(),
+    //   name: $(".name-data").val(),
+    //   type: $(".type-data").val(),
+    //   location: $(".location-data").val(),
+    //   url: $(".url-data").val(),
+    //   keyword: $(".keyword-data").val()
+    // });
+
+    // return submitGigData({
+    //   month: 7,
+    //   year: 2018,
+    //   dates: "7/10 - 7/11",
+    //   days: "Wed - Thurs",
+    //   time: "8pm",
+    //   name: "The Last Five Years",
+    //   type: "musical",
+    //   location: "After Hours Theater",
+    //   url: "link"
+    // });
   });
 }
 
